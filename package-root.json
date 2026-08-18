@@ -1,0 +1,21 @@
+{
+  "name": "securecam-cctv-ecommerce",
+  "version": "1.0.0",
+  "description": "SecureCam - CCTV E-commerce Platform with separated Server and Client",
+  "private": true,
+  "scripts": {
+    "dev": "bun run run.sh",
+    "dev:server": "cd server && bun run dev",
+    "dev:client": "cd client && bun run dev",
+    "setup": "bun run setup-server && bun run setup-client",
+    "setup-server": "cd server && bun install && bun run db:generate && bun run db:push",
+    "setup-client": "cd client && bun install",
+    "seed": "cd server && bun run db:seed",
+    "db:push": "cd server && bun run db:push",
+    "db:generate": "cd server && bun run db:generate",
+    "db:studio": "cd server && bun run db:studio"
+  },
+  "keywords": ["cctv", "security", "cameras", "ecommerce", "surveillance"],
+  "author": "SecureCam",
+  "license": "MIT"
+}

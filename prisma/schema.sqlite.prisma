@@ -1,0 +1,401 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// User model for authentication and user management
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  password      String?   // Optional for OAuth users
+  name          String
+  phone         String?
+  role          String    @default("customer") // "customer", "admin", "manager", "support"
+  avatar        String?
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // OAuth fields
+  accounts      Account[]
+  sessions      Session[]
+  
+  addresses     Address[]
+  carts         Cart[]
+  orders        Order[]
+  reviews       Review[]
+  wishlists     Wishlist[]
+  auditLogs     AuditLog[]
+}
+
+// Account model for OAuth providers
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type              String  // oauth, email, credentials
+  provider          String  // google, facebook, github, etc.
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  @@unique([provider, providerAccountId])
+}
+
+// Session model for NextAuth
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expires      DateTime
+}
+
+// Verification token for email verification
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Address model for shipping addresses
+model Address {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name          String
+  phone         String
+  street        String
+  city          String
+  state         String
+  zipCode       String
+  country       String    @default("Egypt")
+  isDefault     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Brand model for CCTV camera brands
+model Brand {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  slug          String    @unique
+  logo          String?
+  description   String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  products      Product[]
+}
+
+// Category model for product categorization
+model Category {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  slug          String    @unique
+  description   String?
+  image         String?
+  parentId      String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  products      Product[]
+}
+
+// Product model for CCTV cameras and accessories
+model Product {
+  id               String    @id @default(cuid())
+  name             String
+  slug             String    @unique
+  sku              String    @unique
+  barcode          String?
+  description      String
+  
+  // Pricing
+  price            Float
+  comparePrice     Float?
+  costPrice        Float?
+  wholesalePrice   Float?
+  
+  // Images & Media
+  images           String    // JSON array of image URLs
+  mainImage        String?
+  videoUrl         String?
+  demoStreamUrl    String?   // Live demo stream URL
+  
+  // Categorization
+  categoryId       String
+  category         Category  @relation(fields: [categoryId], references: [id])
+  brandId          String?
+  brand            Brand?    @relation(fields: [brandId], references: [id])
+  
+  // Inventory
+  stock            Int       @default(0)
+  lowStockThreshold Int      @default(5)
+  stockStatus      String    @default("in_stock") // in_stock, out_of_stock, pre_order, coming_soon
+  
+  // CCTV-specific specs
+  resolution       String?   // 2MP, 4MP, 8MP, 4K
+  nightVision      String?   // ColorVu, IR 30m, Starlight
+  viewingAngle     String?   // 104°, 2.8mm
+  weatherRating    String?   // IP67, IP66
+  storage          String?   // MicroSD 256GB, NVR
+  isPoe            Boolean   @default(false)
+  isWifi           Boolean   @default(false)
+  hasAudio         Boolean   @default(false)
+  hasTwoWayAudio   Boolean   @default(false)
+  smartDetection   String?   // JSON array: Human, Vehicle, Face, Perimeter
+  specifications   String?   // JSON string for detailed specs
+  
+  // Camera Type
+  cameraType       String?   // bullet, dome, ptz, turret, hidden
+  
+  // Lens
+  lensType         String?   // Fixed, Varifocal
+  focalLength      String?   // 2.8mm, 3.6mm, 2.8-12mm
+  
+  // Status
+  isActive         Boolean   @default(true)
+  featured         Boolean   @default(false)
+  
+  // Analytics
+  rating           Float     @default(0)
+  reviewCount      Int       @default(0)
+  viewCount        Int       @default(0)
+  salesCount       Int       @default(0)
+  
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  cartItems        CartItem[]
+  orderItems       OrderItem[]
+  reviews          Review[]
+  wishlists        Wishlist[]
+}
+
+// Cart model for shopping cart
+model Cart {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  items         CartItem[]
+}
+
+// CartItem model for items in cart
+model CartItem {
+  id            String    @id @default(cuid())
+  cartId        String
+  cart          Cart      @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity      Int       @default(1)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([cartId, productId])
+}
+
+// Order model for customer orders
+model Order {
+  id               String    @id @default(cuid())
+  orderNumber      String    @unique
+  userId           String?
+  user             User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  
+  // Status Pipeline
+  status           String    @default("pending")
+  // pending_payment, payment_failed, awaiting_confirmation, confirmed,
+  // processing, ready_to_ship, shipped, delivered, partially_delivered,
+  // returned, refunded, cancelled
+  
+  // Payment
+  paymentMethod    String    // stripe, paypal, cod, paymob, fawry
+  paymentStatus    String    @default("pending") // pending, paid, failed, refunded
+  paymentReference String?
+  
+  // Pricing
+  subtotal         Float
+  discount         Float     @default(0)
+  couponCode       String?
+  tax              Float     @default(0)
+  shipping         Float     @default(0)
+  total            Float
+  
+  // Shipping
+  shippingName     String
+  shippingPhone    String
+  shippingEmail    String?
+  shippingStreet   String
+  shippingCity     String
+  shippingState    String
+  shippingZipCode  String
+  shippingCountry  String
+  trackingNumber   String?
+  trackingUrl      String?
+  shippingProvider String?
+  
+  // Notes
+  customerNotes    String?
+  internalNotes    String?
+  
+  // Timestamps
+  confirmedAt      DateTime?
+  shippedAt        DateTime?
+  deliveredAt      DateTime?
+  cancelledAt      DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  items            OrderItem[]
+  auditLogs        AuditLog[]
+}
+
+// OrderItem model for items in an order
+model OrderItem {
+  id            String    @id @default(cuid())
+  orderId       String
+  order         Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId     String?   // Optional - allow items without product reference
+  product       Product?  @relation(fields: [productId], references: [id])
+  productName   String
+  productImage  String?
+  productSku    String?
+  price         Float
+  quantity      Int
+  subtotal      Float
+  createdAt     DateTime  @default(now())
+}
+
+// Review model for product reviews
+model Review {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderId       String?
+  rating        Int       // 1-5
+  title         String?
+  comment       String
+  images        String?   // JSON array of image URLs
+  isVerified    Boolean   @default(false)
+  isApproved    Boolean   @default(true)
+  adminReply    String?
+  adminReplyAt  DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  @@unique([userId, productId])
+}
+
+// Wishlist model for user wishlists
+model Wishlist {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId     String
+  product       Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt     DateTime  @default(now())
+  
+  @@unique([userId, productId])
+}
+
+// Coupon model for discount codes
+model Coupon {
+  id              String    @id @default(cuid())
+  code            String    @unique
+  description     String?
+  discount        Float
+  discountType    String    @default("percentage") // percentage, fixed
+  minOrder        Float     @default(0)
+  maxDiscount     Float?
+  usageLimit      Int?
+  usageCount      Int       @default(0)
+  perUserLimit    Int?
+  applicableProducts String? // JSON array of product IDs, null = all
+  applicableCategories String? // JSON array of category IDs
+  firstPurchaseOnly Boolean @default(false)
+  active          Boolean   @default(true)
+  startsAt        DateTime?
+  expiresAt       DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+}
+
+// Audit Log for tracking changes
+model AuditLog {
+  id            String    @id @default(cuid())
+  userId        String?
+  user          User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  action        String    // create, update, delete, login, export, etc.
+  entityType    String    // product, order, user, coupon, etc.
+  entityId      String?
+  oldValue      String?   // JSON
+  newValue      String?   // JSON
+  ipAddress     String?
+  userAgent     String?
+  createdAt     DateTime  @default(now())
+  
+  orderId       String?
+  order         Order?    @relation(fields: [orderId], references: [id], onDelete: SetNull)
+}
+
+// Settings model for site configuration
+model Setting {
+  id            String    @id @default(cuid())
+  key           String    @unique
+  value         String    // JSON or plain text
+  type          String    @default("text") // text, json, boolean, number
+  group         String    @default("general") // general, seo, email, payment, shipping
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Shipping Zone model
+model ShippingZone {
+  id            String    @id @default(cuid())
+  name          String
+  regions       String    // JSON array of regions/cities
+  baseRate      Float
+  freeAbove     Float?
+  estimatedDays String?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+// Payment Method model
+model PaymentMethod {
+  id            String    @id @default(cuid())
+  name          String
+  code          String    @unique // stripe, paypal, cod, paymob, fawry
+  description   String?
+  icon          String?
+  isActive      Boolean   @default(true)
+  isTestMode    Boolean   @default(true)
+  settings      String?   // JSON for API keys and config
+  displayOrder  Int       @default(0)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
