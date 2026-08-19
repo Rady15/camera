@@ -30,6 +30,15 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
+# misc files that shouldn't be in repo
+.config
+.config_backup
+.stats
+.accesslog
+*.pid
+*.out.log
+workspace-*
+
 # env files (can opt-in for committing if needed)
 .env*
 
