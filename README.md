@@ -66,6 +66,8 @@ cd securecam
 bun install
 ```
 
+> Email is powered by the `resend` package. If you use npm instead of Bun, run `npm install` after pulling the latest `package.json`.
+
 ### 3️⃣ إنشاء ملف `.env`
 
 أنشئ ملف `.env` في المجلد الرئيسي:
