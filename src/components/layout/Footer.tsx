@@ -154,13 +154,11 @@ export function Footer() {
               <p className="text-sm text-slate-400 mb-2">
                 {language === 'ar' ? 'طرق الدفع المتاحة:' : 'Available Payment Methods:'}
               </p>
-              <div className="flex gap-2">
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">Visa</div>
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">Mastercard</div>
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">PayPal</div>
-                <div className="bg-white/10 px-3 py-1 rounded text-xs">
-                  {language === 'ar' ? 'عند الاستلام' : 'COD'}
-                </div>
+              <div className="flex flex-wrap gap-2">
+                <img src="/logos/visa.svg" alt="Visa" className="h-8 w-auto rounded" />
+                <img src="/logos/mastercard.svg" alt="Mastercard" className="h-8 w-auto rounded" />
+                <img src="/logos/paypal.svg" alt="PayPal" className="h-8 w-auto rounded" />
+                <img src="/logos/cod.svg" alt="COD" className="h-8 w-auto rounded" />
               </div>
             </div>
           </div>

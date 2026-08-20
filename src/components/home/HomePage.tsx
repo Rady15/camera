@@ -232,13 +232,20 @@ export function HomePage() {
           <h2 className="text-2xl font-bold text-[#1a237e] mb-6 text-center">
             {language === 'ar' ? 'العلامات التجارية' : 'Our Brands'}
           </h2>
-          <div className="flex flex-wrap justify-center items-center gap-8">
-            {['HIKVISION', 'DAHUA', 'EZVIZ', 'TIANDY', 'UNIVIEW', 'HONEYWELL'].map((brand) => (
+          <div className="flex flex-wrap justify-center items-center gap-6">
+            {[
+              { name: 'Hikvision', logo: '/logos/hikvision.svg' },
+              { name: 'Dahua', logo: '/logos/dahua.svg' },
+              { name: 'EZVIZ', logo: '/logos/ezviz.svg' },
+              { name: 'Tiandy', logo: '/logos/tiandy.svg' },
+              { name: 'Uniview', logo: '/logos/uniview.svg' },
+              { name: 'Honeywell', logo: '/logos/honeywell.svg' },
+            ].map((brand) => (
               <div 
-                key={brand} 
-                className="bg-gray-100 px-8 py-4 rounded-lg text-slate-600 font-bold hover:bg-[#e3f2fd] hover:text-[#1a237e] transition-colors cursor-pointer"
+                key={brand.name} 
+                className="bg-gray-50 px-6 py-3 rounded-lg hover:bg-[#e3f2fd] transition-colors cursor-pointer border border-gray-100 hover:border-[#1a237e]/20"
               >
-                {brand}
+                <img src={brand.logo} alt={brand.name} className="h-10 w-auto" />
               </div>
             ))}
           </div>
