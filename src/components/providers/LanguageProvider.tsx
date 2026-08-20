@@ -54,7 +54,7 @@ const translations: Record<Language, Record<string, string>> = {
     'products.outOfStock': 'غير متوفر',
     'products.inStock': 'متوفر',
     'products.viewDetails': 'عرض التفاصيل',
-    'products.egp': 'ج.م',
+    'products.egp': 'ريال',
     
     // Cart
     'cart.title': 'سلة التسوق',
@@ -102,7 +102,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Stats
     'stats.freeShipping': 'شحن مجاني',
-    'stats.freeShippingDesc': 'للطلبات فوق 500 جنيه',
+    'stats.freeShippingDesc': 'للطلبات فوق 500 ريال',
     'stats.support': 'دعم فني',
     'stats.supportDesc': '24/7 خدمة العملاء',
     'stats.warranty': 'ضمان سنتين',
@@ -187,7 +187,7 @@ const translations: Record<Language, Record<string, string>> = {
     'products.outOfStock': 'Out of Stock',
     'products.inStock': 'In Stock',
     'products.viewDetails': 'View Details',
-    'products.egp': 'EGP',
+    'products.egp': 'SAR',
     
     // Cart
     'cart.title': 'Shopping Cart',
@@ -235,7 +235,7 @@ const translations: Record<Language, Record<string, string>> = {
     
     // Stats
     'stats.freeShipping': 'Free Shipping',
-    'stats.freeShippingDesc': 'Orders over 500 EGP',
+    'stats.freeShippingDesc': 'Orders over 500 SAR',
     'stats.support': 'Technical Support',
     'stats.supportDesc': '24/7 Customer Service',
     'stats.warranty': '2 Year Warranty',

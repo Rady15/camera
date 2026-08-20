@@ -67,7 +67,7 @@ export const POST = withRateLimit(
       if (coupon.minOrder > 0 && subtotal < coupon.minOrder) {
         return NextResponse.json(
           { 
-            error: `الحد الأدنى للطلب ${coupon.minOrder} ج.م`, 
+            error: `الحد الأدنى للطلب ${coupon.minOrder} ريال`, 
             code: 'MIN_ORDER_NOT_MET',
             valid: false,
             minOrder: coupon.minOrder 

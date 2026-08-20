@@ -155,7 +155,7 @@ export function AdminDashboardHome() {
   const kpiCards = [
     {
       title: 'Total Revenue',
-      value: `${stats.totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })} ج.م`,
+      value: `${stats.totalRevenue.toLocaleString('en-US', { minimumFractionDigits: 2 })} ريال`,
       change: `${stats.revenueChange >= 0 ? '+' : ''}${stats.revenueChange}%`,
       changeType: stats.revenueChange >= 0 ? 'up' : 'down',
       icon: DollarSign,
@@ -182,7 +182,7 @@ export function AdminDashboardHome() {
     },
     {
       title: 'Avg. Order Value',
-      value: `${stats.avgOrderValue.toFixed(2)} ج.م`,
+      value: `${stats.avgOrderValue.toFixed(2)} ريال`,
       change: stats.totalOrders > 0 ? 'Based on orders' : 'No orders',
       changeType: 'neutral',
       icon: DollarSign,
@@ -320,7 +320,7 @@ export function AdminDashboardHome() {
             </div>
             <div className="flex items-center justify-center gap-8 mt-6 pt-4 border-t border-slate-800">
               <div className="text-center">
-                <p className="text-2xl font-bold text-white">{stats.totalRevenue.toLocaleString()} ج.م</p>
+                <p className="text-2xl font-bold text-white">{stats.totalRevenue.toLocaleString()} ريال</p>
                 <p className="text-sm text-slate-400">Total Revenue</p>
               </div>
               <div className="text-center">
@@ -351,7 +351,7 @@ export function AdminDashboardHome() {
                     <p className="text-xs text-slate-400">{product.salesCount} sales</p>
                   </div>
                   <p className="text-sm font-medium text-emerald-500">
-                    {product.revenue.toLocaleString()} ج.م
+                    {product.revenue.toLocaleString()} ريال
                   </p>
                 </div>
               )) : (
@@ -396,7 +396,7 @@ export function AdminDashboardHome() {
                         {order.shippingName || 'Guest'}
                       </TableCell>
                       <TableCell className="text-white">
-                        {order.total.toLocaleString()} ج.م
+                        {order.total.toLocaleString()} ريال
                       </TableCell>
                       <TableCell>
                         <Badge className={statusColors[order.status] || statusColors.pending}>

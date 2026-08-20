@@ -297,7 +297,7 @@ export function AdminUsersPage() {
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
-      currency: 'EGP',
+      currency: 'SAR',
       minimumFractionDigits: 0,
     }).format(amount)
   }

@@ -20,7 +20,7 @@ export interface PaymobOrderRequest {
   auth_token: string
   delivery_needed: boolean
   amount_cents: number
-  currency: 'EGP'
+  currency: 'SAR'
   merchant_order_id: string
   items: PaymobOrderItem[]
   shipping_data?: {
@@ -69,7 +69,7 @@ export interface PaymobPaymentKeyRequest {
     floor: string
     apartment: string
   }
-  currency: 'EGP'
+  currency: 'SAR'
   integration_id: number
   lock_order_when_paid: boolean
 }
@@ -132,7 +132,7 @@ export async function createOrder(
   authToken: string,
   orderData: {
     orderId: string
-    amount: number // in EGP
+    amount: number // in SAR
     items: Array<{
       name: string
       price: number
@@ -154,7 +154,7 @@ export async function createOrder(
     auth_token: authToken,
     delivery_needed: !!orderData.shippingData,
     amount_cents: amountCents,
-    currency: 'EGP',
+    currency: 'SAR',
     merchant_order_id: orderData.orderId,
     items: orderData.items.map(item => ({
       name: item.name,
@@ -231,7 +231,7 @@ export async function getPaymentKey(
       floor: 'N/A',
       apartment: 'N/A',
     },
-    currency: 'EGP',
+    currency: 'SAR',
     integration_id: parseInt(PAYMOB_INTEGRATION_ID),
     lock_order_when_paid: true,
   }

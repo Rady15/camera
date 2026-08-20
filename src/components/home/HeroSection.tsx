@@ -330,7 +330,7 @@ function ProductCard({ product }: { product: typeof products[0] }) {
         {/* Discount Badge */}
         {product.discount > 0 && (
           <div className="absolute top-2 right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">
-            خصم {product.discount} ج.م
+            خصم {product.discount} ريال
           </div>
         )}
         {/* Wishlist Button */}
@@ -364,10 +364,10 @@ function ProductCard({ product }: { product: typeof products[0] }) {
 
         {/* Price */}
         <div className="flex items-center gap-2 mb-2">
-          <span className="text-lg font-bold text-red-600">{product.price.toLocaleString()} ج.م</span>
+          <span className="text-lg font-bold text-red-600">{product.price.toLocaleString()} ريال</span>
           {product.originalPrice > product.price && (
             <span className="text-sm text-gray-400 line-through">
-              {product.originalPrice.toLocaleString()} ج.م
+              {product.originalPrice.toLocaleString()} ريال
             </span>
           )}
         </div>
@@ -430,8 +430,8 @@ function FilterSidebar() {
           className="mb-2"
         />
         <div className="flex justify-between text-sm text-gray-600">
-          <span>{priceRange[0]} ج.م</span>
-          <span>{priceRange[1]} ج.م</span>
+          <span>{priceRange[0]} ريال</span>
+          <span>{priceRange[1]} ريال</span>
         </div>
       </div>
 
@@ -592,7 +592,7 @@ export function ProductsSection() {
 // Features Strip
 export function FeaturesStrip() {
   const features = [
-    { icon: '🚚', titleAr: 'شحن مجاني', titleEn: 'Free Shipping', descAr: 'للطلبات فوق 500 جنيه', descEn: 'Orders over 500 EGP' },
+    { icon: '🚚', titleAr: 'شحن مجاني', titleEn: 'Free Shipping', descAr: 'للطلبات فوق 500 ريال', descEn: 'Orders over 500 SAR' },
     { icon: '🛡️', titleAr: 'ضمان سنتين', titleEn: '2 Year Warranty', descAr: 'على جميع المنتجات', descEn: 'On all products' },
     { icon: '📞', titleAr: 'دعم فني', titleEn: 'Technical Support', descAr: '24/7 خدمة العملاء', descEn: '24/7 Customer Service' },
     { icon: '🔧', titleAr: 'تركيب مجاني', titleEn: 'Free Installation', descAr: 'في القاهرة والجيزة', descEn: 'In Cairo & Giza' },

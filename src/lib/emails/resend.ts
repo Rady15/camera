@@ -127,7 +127,7 @@ export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<
     <tr>
       <td style="padding: 10px; border-bottom: 1px solid #eee;">${item.name}</td>
       <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: center;">${item.quantity}</td>
-      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: left;">${item.price.toLocaleString('ar-EG')} ج.م</td>
+      <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: left;">${item.price.toLocaleString('ar-EG')} ريال</td>
     </tr>
   `).join('')
 
@@ -168,22 +168,22 @@ export async function sendOrderConfirmationEmail(data: OrderEmailData): Promise<
         <div style="margin-top: 20px; padding: 15px; background: #fff; border-radius: 5px;">
           <p style="margin: 5px 0; display: flex; justify-content: space-between;">
             <span>المجموع الفرعي:</span>
-            <span>${data.subtotal.toLocaleString('ar-EG')} ج.م</span>
+            <span>${data.subtotal.toLocaleString('ar-EG')} ريال</span>
           </p>
           ${data.discount ? `
           <p style="margin: 5px 0; display: flex; justify-content: space-between; color: #22c55e;">
             <span>الخصم:</span>
-            <span>-${data.discount.toLocaleString('ar-EG')} ج.م</span>
+            <span>-${data.discount.toLocaleString('ar-EG')} ريال</span>
           </p>
           ` : ''}
           <p style="margin: 5px 0; display: flex; justify-content: space-between;">
             <span>الشحن:</span>
-            <span>${data.shipping.toLocaleString('ar-EG')} ج.م</span>
+            <span>${data.shipping.toLocaleString('ar-EG')} ريال</span>
           </p>
           <hr style="margin: 10px 0;">
           <p style="margin: 5px 0; display: flex; justify-content: space-between; font-weight: bold; font-size: 18px;">
             <span>الإجمالي:</span>
-            <span style="color: #1e3a5f;">${data.total.toLocaleString('ar-EG')} ج.م</span>
+            <span style="color: #1e3a5f;">${data.total.toLocaleString('ar-EG')} ريال</span>
           </p>
         </div>
         

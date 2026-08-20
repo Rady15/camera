@@ -15,8 +15,8 @@ export function HomeFeaturesStrip() {
       icon: Truck,
       titleAr: 'شحن مجاني',
       titleEn: 'Free Shipping',
-      descAr: 'للطلبات فوق 500 ج.م',
-      descEn: 'Orders over 500 EGP',
+      descAr: 'للطلبات فوق 500 ريال',
+      descEn: 'Orders over 500 SAR',
     },
     {
       icon: Zap,
@@ -188,9 +188,9 @@ export function HomePage() {
                     {language === 'ar' ? 'كاميرا مراقبة داخلية 4MP مع رؤية ليلية' : 'Indoor Security Camera 4MP with Night Vision'}
                   </h3>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-lg font-bold text-[#1a237e]">1,250 ج.م</span>
+                    <span className="text-lg font-bold text-[#1a237e]">1,250 ريال</span>
                     {i % 2 === 0 && (
-                      <span className="text-sm text-slate-400 line-through">1,500 ج.م</span>
+                      <span className="text-sm text-slate-400 line-through">1,500 ريال</span>
                     )}
                   </div>
                   <div className="flex items-center gap-1 text-green-600 text-sm">

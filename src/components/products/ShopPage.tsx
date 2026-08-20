@@ -555,7 +555,7 @@ export function ShopPage() {
                       {/* Price */}
                       <div className="flex items-center gap-2 mb-2 flex-wrap">
                         <span className="text-lg font-bold text-[#1a237e]">
-                          {product.price.toLocaleString()} {language === 'ar' ? 'ج.م' : 'EGP'}
+                          {product.price.toLocaleString()} {language === 'ar' ? 'ريال' : 'SAR'}
                         </span>
                         {product.comparePrice && product.comparePrice > product.price && (
                           <span className="text-sm text-slate-400 line-through">

@@ -69,14 +69,14 @@ describe('Paymob Integration', () => {
   })
 
   describe('Amount Conversion', () => {
-    it('should convert EGP to cents correctly', () => {
-      const amount = 1000 // 1000 EGP
+    it('should convert SAR to cents correctly', () => {
+      const amount = 1000 // 1000 SAR
       const cents = Math.round(amount * 100)
       expect(cents).toBe(100000)
     })
 
     it('should handle decimal amounts', () => {
-      const amount = 99.99 // 99.99 EGP
+      const amount = 99.99 // 99.99 SAR
       const cents = Math.round(amount * 100)
       expect(cents).toBe(9999)
     })
@@ -95,14 +95,14 @@ describe('Paymob Integration', () => {
         auth_token: 'test-token',
         delivery_needed: true,
         amount_cents: 100000,
-        currency: 'EGP',
+        currency: 'SAR',
         merchant_order_id: 'SV-TEST-123',
         items: [
           { name: 'Test', amount_cents: 100000, description: 'Test', quantity: 1 }
         ],
       }
 
-      expect(payload.currency).toBe('EGP')
+      expect(payload.currency).toBe('SAR')
       expect(payload.amount_cents).toBe(100000)
       expect(payload.items).toHaveLength(1)
     })
@@ -132,7 +132,7 @@ describe('Paymob Integration', () => {
         obj: {
           amount_cents: 100000,
           created_at: '2024-01-01',
-          currency: 'EGP',
+          currency: 'SAR',
           id: 12345678,
           order: { id: 87654321, merchant_order_id: 'SV-123' },
           success: true,
@@ -149,7 +149,7 @@ describe('Paymob Integration', () => {
 
       // Verify the callback structure
       expect(callback.obj.amount_cents).toBe(100000)
-      expect(callback.obj.currency).toBe('EGP')
+      expect(callback.obj.currency).toBe('SAR')
       expect(callback.obj.success).toBe(true)
     })
   })

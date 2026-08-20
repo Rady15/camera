@@ -509,7 +509,7 @@ export function AdminShippingPage() {
               <h3 className="text-lg font-semibold text-white">Pricing</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <Label className="text-slate-300">Base Rate (EGP) *</Label>
+                  <Label className="text-slate-300">Base Rate (SAR) *</Label>
                   <Input
                     type="number"
                     value={formData.baseRate}
@@ -519,7 +519,7 @@ export function AdminShippingPage() {
                   />
                 </div>
                 <div>
-                  <Label className="text-slate-300">Free Shipping Above (EGP)</Label>
+                  <Label className="text-slate-300">Free Shipping Above (SAR)</Label>
                   <Input
                     type="number"
                     value={formData.freeAbove}

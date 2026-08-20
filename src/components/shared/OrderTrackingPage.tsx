@@ -156,7 +156,7 @@ export function OrderTrackingPage() {
   }
 
   const formatCurrency = (amount: number) => {
-    return `${amount.toFixed(2)} ج.م`
+    return `${amount.toFixed(2)} ريال`
   }
 
   return (
