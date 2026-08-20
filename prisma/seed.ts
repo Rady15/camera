@@ -1,0 +1,355 @@
+import { PrismaClient } from '@prisma/client'
+import { hash } from 'bcryptjs'
+
+const prisma = new PrismaClient()
+
+const cctvCategories = [
+  { name: 'كاميرات IP', slug: 'ip-cameras', description: 'كاميرات IP عالية الجودة للمراقبة الداخلية والخارجية' },
+  { name: 'كاميرات AHD/Analog', slug: 'analog-cameras', description: 'كاميرات تناظرية عالية الدقة HD' },
+  { name: 'مسجلات NVR', slug: 'nvr', description: 'مسجلات شبكية لكاميرات IP' },
+  { name: 'مسجلات DVR', slug: 'dvr', description: 'مسجلات رقمية للكاميرات التناظرية' },
+  { name: 'كاميرات WiFi', slug: 'wifi-cameras', description: 'كاميرات لاسلكية سهلة التركيب' },
+  { name: 'أنظمة كاملة', slug: 'systems', description: 'أنظمة مراقبة متكاملة جاهزة للتثبيت' },
+  { name: 'اكسسوارات', slug: 'accessories', description: 'كابلات، موصلات، وملحقات أخرى' },
+  { name: 'كابلات وموصلات', slug: 'cables', description: 'كابلات شبكة وكابلات طاقة وموصلات' },
+  { name: 'هارد ديسك', slug: 'storage', description: 'أقراص صلبة للمراقبة' },
+  { name: 'شاشات عرض', slug: 'monitors', description: 'شاشات عرض للمراقبة' },
+]
+
+const cctvBrands = [
+  { name: 'Hikvision', slug: 'hikvision', description: 'العلامة التجارية الرائدة عالمياً في أنظمة المراقبة' },
+  { name: 'Dahua', slug: 'dahua', description: 'حلول مراقبة متقدمة بأسعار تنافسية' },
+  { name: 'EZVIZ', slug: 'ezviz', description: 'كاميرات ذكية للمنازل والمشاريع الصغيرة' },
+  { name: 'Tiandy', slug: 'tiandy', description: 'تقنيات مراقبة مبتكرة' },
+  { name: 'Uniview', slug: 'uniview', description: 'حلول مراقبة احترافية' },
+]
+
+const sampleImages = [
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1551808525-51a94da548ce?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
+]
+
+const cctvProducts = [
+  {
+    name: 'كاميرا Hikvision IP Dome 4MP',
+    nameEn: 'Hikvision IP Dome Camera 4MP',
+    description: 'كاميرا IP Dome بدقة 4MP مع رؤية ليلية ColorVu حتى 30 متر، تدعم PoE والكشف الذكي للأشخاص والمركبات.',
+    price: 1850, comparePrice: 2200, categorySlug: 'ip-cameras', brandName: 'Hikvision',
+    stock: 50, sku: 'HK-DOME-4MP-001', featured: true, resolution: '4MP (2K)',
+    nightVision: 'ColorVu 30m', viewingAngle: '104° / 2.8mm', weatherRating: 'IP67',
+    storage: 'MicroSD 256GB', isPoe: true, isWifi: false, hasAudio: true, hasTwoWayAudio: false,
+    smartDetection: ['Human Detection', 'Vehicle Detection'], cameraType: 'Dome', lensType: 'Fixed', focalLength: '2.8mm',
+  },
+  {
+    name: 'كاميرا Dahua IP Bullet 8MP 4K',
+    nameEn: 'Dahua IP Bullet Camera 8MP 4K',
+    description: 'كاميرا IP Bullet بدقة 8MP 4K مع رؤية ليلية بالأشعة تحت الحمراء حتى 50 متر.',
+    price: 2450, comparePrice: 2900, categorySlug: 'ip-cameras', brandName: 'Dahua',
+    stock: 35, sku: 'DH-BLT-8MP-001', featured: true, resolution: '8MP (4K)',
+    nightVision: 'IR 50m', viewingAngle: '87° / 3.6mm', weatherRating: 'IP67',
+    storage: 'MicroSD 256GB', isPoe: true, isWifi: false, hasAudio: true, hasTwoWayAudio: true,
+    smartDetection: ['Human Detection', 'Vehicle Detection', 'Perimeter Protection'], cameraType: 'Bullet', lensType: 'Fixed', focalLength: '3.6mm',
+  },
+  {
+    name: 'كاميرا Hikvision PTZ 4MP',
+    nameEn: 'Hikvision PTZ Camera 4MP',
+    description: 'كاميرا IP PTZ بدقة 4MP مع تقريب بصري 25x وتتبع تلقائي.',
+    price: 8500, comparePrice: 9500, categorySlug: 'ip-cameras', brandName: 'Hikvision',
+    stock: 15, sku: 'HK-PTZ-4MP-001', featured: true, resolution: '4MP (2K)',
+    nightVision: 'IR 150m', viewingAngle: '360° Pan', weatherRating: 'IP66',
+    storage: 'NVR', isPoe: true, isWifi: false, hasAudio: true, hasTwoWayAudio: true,
+    smartDetection: ['Human Detection', 'Vehicle Detection', 'Face Detection', 'Auto Tracking'], cameraType: 'PTZ', lensType: 'Varifocal', focalLength: '4.5-135mm',
+  },
+  {
+    name: 'كاميرا Uniview Turret 5MP',
+    nameEn: 'Uniview Turret Camera 5MP',
+    description: 'كاميرا IP Turret بدقة 5MP مع رؤية ليلية Smart IR حتى 30 متر.',
+    price: 1650, comparePrice: null, categorySlug: 'ip-cameras', brandName: 'Uniview',
+    stock: 40, sku: 'UNV-TRT-5MP-001', featured: false, resolution: '5MP',
+    nightVision: 'IR 30m', viewingAngle: '102° / 2.8mm', weatherRating: 'IP67',
+    storage: 'MicroSD 128GB', isPoe: true, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: ['Human Detection'], cameraType: 'Turret', lensType: 'Fixed', focalLength: '2.8mm',
+  },
+  {
+    name: 'كاميرا EZVIZ WiFi C6N Pro',
+    nameEn: 'EZVIZ WiFi Camera C6N Pro',
+    description: 'كاميرا WiFi ذكية بدقة 2MP مع دوران 360° وتتبع الحركة.',
+    price: 650, comparePrice: 800, categorySlug: 'wifi-cameras', brandName: 'EZVIZ',
+    stock: 100, sku: 'EZV-C6N-001', featured: true, resolution: '2MP (1080p)',
+    nightVision: 'IR 10m', viewingAngle: '360° Pan', weatherRating: 'Indoor Only',
+    storage: 'MicroSD 128GB', isPoe: false, isWifi: true, hasAudio: true, hasTwoWayAudio: true,
+    smartDetection: ['Human Detection', 'Motion Tracking'], cameraType: 'Dome', lensType: 'Fixed', focalLength: '3.6mm',
+  },
+  {
+    name: 'كاميرا Dahua WiFi Outdoor IMOU Ranger 2',
+    nameEn: 'Dahua WiFi Outdoor IMOU Ranger 2',
+    description: 'كاميرا WiFi خارجية بدقة 4MP مع رؤية ليلية بالألوان وكشاف مدمج.',
+    price: 950, comparePrice: 1200, categorySlug: 'wifi-cameras', brandName: 'Dahua',
+    stock: 80, sku: 'DH-IMOU-001', featured: true, resolution: '4MP (2K)',
+    nightVision: 'Full Color 30m', viewingAngle: '87°', weatherRating: 'IP66',
+    storage: 'MicroSD 256GB', isPoe: false, isWifi: true, hasAudio: true, hasTwoWayAudio: true,
+    smartDetection: ['Human Detection', 'Vehicle Detection'], cameraType: 'Bullet', lensType: 'Fixed', focalLength: '2.8mm',
+  },
+  {
+    name: 'كاميرا Hikvision WiFi Cube 2MP',
+    nameEn: 'Hikvision WiFi Cube Camera 2MP',
+    description: 'كاميرا WiFi مكعبة للداخل بدقة 2MP مع رؤية ليلية وتواصل ثنائي الاتجاه.',
+    price: 450, comparePrice: null, categorySlug: 'wifi-cameras', brandName: 'Hikvision',
+    stock: 120, sku: 'HK-CUBE-001', featured: false, resolution: '2MP (1080p)',
+    nightVision: 'IR 10m', viewingAngle: '130°', weatherRating: 'Indoor Only',
+    storage: 'MicroSD 64GB', isPoe: false, isWifi: true, hasAudio: true, hasTwoWayAudio: true,
+    smartDetection: ['Human Detection'], cameraType: 'Box', lensType: 'Fixed', focalLength: '2.8mm',
+  },
+  {
+    name: 'مسجل Hikvision NVR 8 قنوات 4K',
+    nameEn: 'Hikvision NVR 8 Channels 4K',
+    description: 'مسجل شبكي 8 قنوات يدعم كاميرات IP حتى 8MP مع إخراج 4K. يحتوي على هارد 2TB مدمج.',
+    price: 3500, comparePrice: 4000, categorySlug: 'nvr', brandName: 'Hikvision',
+    stock: 25, sku: 'HK-NVR-8CH-001', featured: true, resolution: '8MP Max',
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: '2TB HDD (Support up to 8TB)', isPoe: false, isWifi: false, hasAudio: true, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'مسجل Dahua NVR 16 قناة',
+    nameEn: 'Dahua NVR 16 Channels',
+    description: 'مسجل شبكي 16 قناة يدعم كاميرات IP حتى 8MP مع تقنية H.265+. بدون هارد.',
+    price: 2800, comparePrice: null, categorySlug: 'nvr', brandName: 'Dahua',
+    stock: 20, sku: 'DH-NVR-16CH-001', featured: false, resolution: '8MP Max',
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: 'Support up to 16TB', isPoe: false, isWifi: false, hasAudio: true, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'مسجل Hikvision NVR 32 قناة PoE',
+    nameEn: 'Hikvision NVR 32 Channels PoE',
+    description: 'مسجل شبكي 32 قناة مع منافذ PoE مدمجة. يدعم كاميرات IP حتى 12MP مع ذكاء اصطناعي.',
+    price: 8500, comparePrice: 9500, categorySlug: 'nvr', brandName: 'Hikvision',
+    stock: 10, sku: 'HK-NVR-32CH-POE', featured: true, resolution: '12MP Max',
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: 'Support up to 32TB (8 HDDs)', isPoe: true, isWifi: false, hasAudio: true, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'مسجل Hikvision DVR 8 قنوات HD',
+    nameEn: 'Hikvision DVR 8 Channels HD',
+    description: 'مسجل رقمي 8 قنوات للكاميرات التناظرية AHD/TVI/CVI. يدعم دقة حتى 5MP مع هارد 1TB.',
+    price: 1800, comparePrice: 2200, categorySlug: 'dvr', brandName: 'Hikvision',
+    stock: 30, sku: 'HK-DVR-8CH-001', featured: true, resolution: '5MP Max',
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: '1TB HDD (Support up to 6TB)', isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'مسجل Dahua DVR 16 قناة',
+    nameEn: 'Dahua DVR 16 Channels',
+    description: 'مسجل رقمي 16 قناة يدعم كاميرات AHD/CVI/TVI. بدون هارد.',
+    price: 1600, comparePrice: null, categorySlug: 'dvr', brandName: 'Dahua',
+    stock: 25, sku: 'DH-DVR-16CH-001', featured: false, resolution: '5MP Max',
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: 'Support up to 8TB', isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'كاميرا Hikvision AHD Bullet 5MP',
+    nameEn: 'Hikvision AHD Bullet Camera 5MP',
+    description: 'كاميرا تناظرية AHD بدقة 5MP مع رؤية ليلية IR حتى 40 متر.',
+    price: 750, comparePrice: 900, categorySlug: 'analog-cameras', brandName: 'Hikvision',
+    stock: 60, sku: 'HK-AHD-BLT-001', featured: true, resolution: '5MP',
+    nightVision: 'IR 40m', viewingAngle: '87° / 3.6mm', weatherRating: 'IP67',
+    storage: null, isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: 'Bullet', lensType: 'Fixed', focalLength: '3.6mm',
+  },
+  {
+    name: 'كاميرا Dahua AHD Dome 4MP',
+    nameEn: 'Dahua AHD Dome Camera 4MP',
+    description: 'كاميرا تناظرية AHD Dome بدقة 4MP مع رؤية ليلية IR حتى 25 متر.',
+    price: 550, comparePrice: null, categorySlug: 'analog-cameras', brandName: 'Dahua',
+    stock: 70, sku: 'DH-AHD-DOM-001', featured: false, resolution: '4MP (2K)',
+    nightVision: 'IR 25m', viewingAngle: '92° / 2.8mm', weatherRating: 'IP66',
+    storage: null, isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: 'Dome', lensType: 'Fixed', focalLength: '2.8mm',
+  },
+  {
+    name: 'نظام مراقبة Hikvision 4 كاميرات + NVR',
+    nameEn: 'Hikvision 4 Cameras + NVR System',
+    description: 'نظام مراقبة متكامل: 4 كاميرات IP Dome 4MP + مسجل NVR 8 قنوات + هارد 2TB + كابلات.',
+    price: 7500, comparePrice: 9000, categorySlug: 'systems', brandName: 'Hikvision',
+    stock: 15, sku: 'SYS-HK-4CAM-001', featured: true, resolution: '4MP Per Camera',
+    nightVision: 'ColorVu 30m', viewingAngle: '104°', weatherRating: 'IP67',
+    storage: '2TB HDD Included', isPoe: true, isWifi: false, hasAudio: true, hasTwoWayAudio: false,
+    smartDetection: ['Human Detection', 'Vehicle Detection'], cameraType: 'Dome', lensType: 'Fixed', focalLength: '2.8mm',
+  },
+  {
+    name: 'نظام مراقبة Dahua 8 كاميرات + DVR',
+    nameEn: 'Dahua 8 Cameras + DVR System',
+    description: 'نظام مراقبة تناظري متكامل: 8 كاميرات AHD Bullet 5MP + مسجل DVR 8 قنوات + هارد 2TB.',
+    price: 6500, comparePrice: 7500, categorySlug: 'systems', brandName: 'Dahua',
+    stock: 12, sku: 'SYS-DH-8CAM-001', featured: true, resolution: '5MP Per Camera',
+    nightVision: 'IR 40m', viewingAngle: '87°', weatherRating: 'IP67',
+    storage: '2TB HDD Included', isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: 'Bullet', lensType: 'Fixed', focalLength: '3.6mm',
+  },
+  {
+    name: 'هارد ديسك Western Digital 2TB Purple',
+    nameEn: 'Western Digital 2TB Purple HDD',
+    description: 'قرص صلب مخصص للمراقبة يعمل 24/7. يدعم حتى 64 كاميرا.',
+    price: 1200, comparePrice: 1400, categorySlug: 'storage', brandName: null,
+    stock: 80, sku: 'HDD-WD-2TB-001', featured: false, resolution: null,
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: '2TB', isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'هارد ديسك Seagate 4TB Skyhawk',
+    nameEn: 'Seagate 4TB Skyhawk HDD',
+    description: 'قرص صلب للمراقبة بدقة عالية. يدعم حتى 64 كاميرا HD.',
+    price: 2200, comparePrice: 2500, categorySlug: 'storage', brandName: null,
+    stock: 60, sku: 'HDD-SEG-4TB-001', featured: false, resolution: null,
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: '4TB', isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'كابل شبكة Cat6 305 متر',
+    nameEn: 'Cat6 Network Cable 305m',
+    description: 'كابل شبكة Cat6 بجودة عالية للكاميرات والشبكات.',
+    price: 850, comparePrice: null, categorySlug: 'cables', brandName: null,
+    stock: 200, sku: 'CAB-CAT6-305M', featured: false, resolution: null,
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: null, isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'كابل Combo 100 متر (فيديو + طاقة)',
+    nameEn: 'Combo Cable 100m (Video + Power)',
+    description: 'كابل مدمج للفيديو والطاقة. مناسب للكاميرات التناظرية.',
+    price: 350, comparePrice: null, categorySlug: 'cables', brandName: null,
+    stock: 300, sku: 'CAB-COMBO-100M', featured: false, resolution: null,
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: null, isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'محول طاقة 12V 5A',
+    nameEn: 'Power Adapter 12V 5A',
+    description: 'محول طاقة للكاميرات والمسجلات.',
+    price: 85, comparePrice: null, categorySlug: 'accessories', brandName: null,
+    stock: 500, sku: 'ACC-PWR-12V5A', featured: false, resolution: null,
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: null, isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'قاعدة حائط للكاميرات Bullet',
+    nameEn: 'Wall Mount for Bullet Cameras',
+    description: 'قاعدة حائط معدنية متينة للكاميرات Bullet.',
+    price: 45, comparePrice: null, categorySlug: 'accessories', brandName: null,
+    stock: 400, sku: 'ACC-MNT-BLT', featured: false, resolution: null,
+    nightVision: null, viewingAngle: null, weatherRating: null,
+    storage: null, isPoe: false, isWifi: false, hasAudio: false, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+  {
+    name: 'شاشة مراقبة 22 بوصة LED',
+    nameEn: '22 inch LED Monitor',
+    description: 'شاشة LED للمراقبة بدقة Full HD. تدعم العمل المتواصل 24/7.',
+    price: 1800, comparePrice: 2100, categorySlug: 'monitors', brandName: null,
+    stock: 40, sku: 'MON-22LED-001', featured: false, resolution: '1080p',
+    nightVision: null, viewingAngle: '178°', weatherRating: null,
+    storage: null, isPoe: false, isWifi: false, hasAudio: true, hasTwoWayAudio: false,
+    smartDetection: [], cameraType: null, lensType: null, focalLength: null,
+  },
+]
+
+async function main() {
+  const existingProducts = await prisma.product.count()
+  if (existingProducts > 0) {
+    console.log('Database already seeded, skipping.')
+    return
+  }
+
+  console.log('Seeding database...')
+
+  for (const category of cctvCategories) {
+    await prisma.category.upsert({
+      where: { slug: category.slug },
+      update: { name: category.name, description: category.description },
+      create: { name: category.name, slug: category.slug, description: category.description },
+    })
+  }
+
+  const createdCategories = await prisma.category.findMany()
+  const categoryMap = new Map(createdCategories.map(c => [c.slug, c.id]))
+
+  for (const brand of cctvBrands) {
+    await prisma.brand.upsert({
+      where: { slug: brand.slug },
+      update: { name: brand.name, description: brand.description },
+      create: { name: brand.name, slug: brand.slug, description: brand.description },
+    })
+  }
+
+  const createdBrands = await prisma.brand.findMany()
+  const brandMap = new Map(createdBrands.map(b => [b.name, b.id]))
+
+  for (const product of cctvProducts) {
+    const categoryId = categoryMap.get(product.categorySlug)
+    if (!categoryId) continue
+    const brandId = product.brandName ? brandMap.get(product.brandName) : null
+
+    await prisma.product.create({
+      data: {
+        name: product.name,
+        slug: product.nameEn.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Date.now() + Math.random().toString(36).substr(2, 5),
+        description: product.description,
+        price: product.price,
+        comparePrice: product.comparePrice,
+        images: JSON.stringify([sampleImages[cctvProducts.indexOf(product) % sampleImages.length]]),
+        categoryId,
+        brandId: brandId || undefined,
+        stock: product.stock,
+        lowStockThreshold: 5,
+        stockStatus: product.stock > 0 ? 'in_stock' : 'out_of_stock',
+        sku: product.sku,
+        featured: product.featured,
+        isActive: true,
+        resolution: product.resolution,
+        nightVision: product.nightVision,
+        viewingAngle: product.viewingAngle,
+        weatherRating: product.weatherRating,
+        storage: product.storage,
+        isPoe: product.isPoe,
+        isWifi: product.isWifi,
+        hasAudio: product.hasAudio,
+        hasTwoWayAudio: product.hasTwoWayAudio,
+        smartDetection: product.smartDetection.length > 0 ? JSON.stringify(product.smartDetection) : null,
+        cameraType: product.cameraType,
+        lensType: product.lensType,
+        focalLength: product.focalLength,
+        rating: 3.5 + Math.random() * 1.5,
+        reviewCount: Math.floor(Math.random() * 50) + 5,
+        viewCount: Math.floor(Math.random() * 500) + 50,
+      },
+    })
+  }
+
+  const existingAdmin = await prisma.user.findFirst({ where: { role: 'admin' } })
+  if (!existingAdmin) {
+    const hashedPassword = await hash('admin123', 12)
+    await prisma.user.create({
+      data: { name: 'مدير النظام', email: 'admin@securecam.com', password: hashedPassword, role: 'admin' },
+    })
+  }
+
+  const productCount = await prisma.product.count()
+  const categoryCount = await prisma.category.count()
+  const brandCount = await prisma.brand.count()
+  console.log(`Seeded: ${productCount} products, ${categoryCount} categories, ${brandCount} brands`)
+}
+
+main()
+  .catch((e) => { console.error(e); process.exit(1) })
+  .finally(() => prisma.$disconnect())

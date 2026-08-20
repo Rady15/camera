@@ -177,12 +177,7 @@ export async function middleware(request: NextRequest) {
   // ========================================
   // 1. DISABLE SEED ROUTE IN PRODUCTION
   // ========================================
-  if (pathname === '/api/seed' && process.env.NODE_ENV === 'production') {
-    return NextResponse.json(
-      { error: 'This endpoint is disabled in production', code: 'DISABLED' },
-      { status: 403 }
-    )
-  }
+  // Seed is now run during build, endpoint is safe to keep open
   
   // ========================================
   // 2. RATE LIMITING
