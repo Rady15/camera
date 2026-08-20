@@ -25,43 +25,11 @@ const cctvBrands = [
   { name: 'Uniview', slug: 'uniview', description: 'حلول مراقبة احترافية' },
 ]
 
-// Sample product images (using placeholder)
-const sampleImages = [
+const fallbackImages = [
   'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
   'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop',
   'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
   'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop',
-]
-
-const cameraImages = [
-  'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop',
-]
-
-const nvrDvrImages = [
-  'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=600&fit=crop',
-]
-
-const hddImages = [
-  'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&h=600&fit=crop',
-]
-
-const monitorImages = [
-  'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&h=600&fit=crop',
-]
-
-const cableImages = [
-  'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop',
-]
-
-const accessoryImages = [
-  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
 ]
 
 // CCTV Products
@@ -91,6 +59,7 @@ const cctvProducts = [
     cameraType: 'Dome',
     lensType: 'Fixed',
     focalLength: '2.8mm',
+    image: 'https://www.hikvision.com/content/dam/hikvision/products/IS%20DS/2CD21xxG2/I(S)U/01 pi/hikvision-ds-2cd2143g2-isu-sl-01.png',
   },
   {
     name: 'كاميرا Dahua IP Bullet 8MP 4K',
@@ -116,6 +85,7 @@ const cctvProducts = [
     cameraType: 'Bullet',
     lensType: 'Fixed',
     focalLength: '3.6mm',
+    image: 'https://www.dahuasecurity.com/image/resource/202201/19/534856d49f0e495f8d53d8ae5bb46e0d.png',
   },
   {
     name: 'كاميرا Hikvision PTZ 4MP',
@@ -141,6 +111,7 @@ const cctvProducts = [
     cameraType: 'PTZ',
     lensType: 'Varifocal',
     focalLength: '4.5-135mm',
+    image: 'https://www.hikvision.com/content/dam/hikvision/products/IS%20DS/2DE4A/4xxxIW-DE/pi/hikvision-ds-2de4a425iw-de-t5.png',
   },
   {
     name: 'كاميرا Uniview Turret 5MP',
@@ -166,6 +137,7 @@ const cctvProducts = [
     cameraType: 'Turret',
     lensType: 'Fixed',
     focalLength: '2.8mm',
+    image: 'https://static.uniview.com/IPC3614SR3-DPF28K-G.png',
   },
   // WiFi Cameras
   {
@@ -192,6 +164,7 @@ const cctvProducts = [
     cameraType: 'Dome',
     lensType: 'Fixed',
     focalLength: '3.6mm',
+    image: 'https://www.ezviz.com/images/product/CS-C6N-PRO.png',
   },
   {
     name: 'كاميرا Dahua WiFi Outdoor IMOU Ranger 2',
@@ -217,6 +190,7 @@ const cctvProducts = [
     cameraType: 'Bullet',
     lensType: 'Fixed',
     focalLength: '2.8mm',
+    image: 'https://www.imou.com/image/resource/202305/20/IPC-G22BP.png',
   },
   {
     name: 'كاميرا Hikvision WiFi Cube 2MP',
@@ -242,6 +216,7 @@ const cctvProducts = [
     cameraType: 'Box',
     lensType: 'Fixed',
     focalLength: '2.8mm',
+    image: 'https://www.hikvision.com/content/dam/hikvision/products/IS%20CM/wi-fi%20cube/1xx/pi/hikvision-ds-2ce16d0t-ir3-02.png',
   },
   // NVR
   {
@@ -268,6 +243,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.hikvision.com/content/dam/hikvision/products/IDS2/hydra-series/pi/hikvision-ds-7608ni-i2-4k.png',
   },
   {
     name: 'مسجل Dahua NVR 16 قناة',
@@ -293,6 +269,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.dahuasecurity.com/image/resource/202203/01/6f6b3a950b82414bb877e39e20e39c0b.png',
   },
   {
     name: 'مسجل Hikvision NVR 32 قناة PoE',
@@ -318,6 +295,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.hikvision.com/content/dam/hikproducts2/IDS2/k-series-poe/pi/hikvision-ds-7732ni-i4-4k.png',
   },
   // DVR
   {
@@ -344,6 +322,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.hikvision.com/content/dam/hikvision/products/IDS2/hydra-series/pi/hikvision-ds-7208hwi-k2.png',
   },
   {
     name: 'مسجل Dahua DVR 16 قناة',
@@ -369,6 +348,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.dahuasecurity.com/image/resource/202202/25/3be4d4d8c9324d0992b6a21a3b34a7f3.png',
   },
   // Analog Cameras
   {
@@ -395,6 +375,7 @@ const cctvProducts = [
     cameraType: 'Bullet',
     lensType: 'Fixed',
     focalLength: '3.6mm',
+    image: 'https://www.hikvision.com/content/dam/hikvision/products/IS%20DS/2CE16DxxT-IR/pi/hikvision-ds-2ce16d0t-ir3-02.png',
   },
   {
     name: 'كاميرا Dahua AHD Dome 4MP',
@@ -420,6 +401,7 @@ const cctvProducts = [
     cameraType: 'Dome',
     lensType: 'Fixed',
     focalLength: '2.8mm',
+    image: 'https://www.dahuasecurity.com/image/resource/202203/01/c2f7e5c275b74de2a436169bc07ef8f1.png',
   },
   // Complete Systems
   {
@@ -446,6 +428,7 @@ const cctvProducts = [
     cameraType: 'Dome',
     lensType: 'Fixed',
     focalLength: '2.8mm',
+    image: 'https://www.hikvision.com/content/dam/hikvision/products/IDS2/k-series-poe/k-series-poe-kit/pi/hikvision-ds-2cd2143g2-iu.png',
   },
   {
     name: 'نظام مراقبة Dahua 8 كاميرات + DVR',
@@ -471,6 +454,7 @@ const cctvProducts = [
     cameraType: 'Bullet',
     lensType: 'Fixed',
     focalLength: '3.6mm',
+    image: 'https://www.dahuasecurity.com/image/resource/202203/01/313c1a1c8c064df4b61e3a6df43bc600.png',
   },
   // Storage
   {
@@ -497,11 +481,12 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.westerndigital.com/content/dam/wd/en/products/internal/wd-purple/WD-Purple-3-5-Inch-HDD.png',
   },
   {
     name: 'هارد ديسك Seagate 4TB Skyhawk',
     nameEn: 'Seagate 4TB Skyhawk HDD',
-    description: 'قرص صلب للمراقشة بدقة عالية. يدعم حتى 64 كاميرا HD.',
+    description: 'قرص صلب للمراقبة بدقة عالية. يدعم حتى 64 كاميرا HD.',
     price: 2200,
     comparePrice: 2500,
     categorySlug: 'storage',
@@ -522,6 +507,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.seagate.com/content/dam/seagate/migrated-assets/www-seagate/en-us/skyhawk/img/seagate-skyhawk-4tb.png',
   },
   // Cables
   {
@@ -548,6 +534,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.monoprice.com/product/image/31364/productMain.png',
   },
   {
     name: 'كابل Combo 100 متر (فيديو + طاقة)',
@@ -573,6 +560,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.amazon.com/dp/B08Z3FHCYX',
   },
   // Accessories
   {
@@ -599,6 +587,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.amazon.com/dp/B07YBZ78XY',
   },
   {
     name: 'قاعدة حائط للكاميرات Bullet',
@@ -624,6 +613,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.amazon.com/dp/B07ZKPW5P5',
   },
   // Monitors
   {
@@ -650,6 +640,7 @@ const cctvProducts = [
     cameraType: null,
     lensType: null,
     focalLength: null,
+    image: 'https://www.samsung.com/us/computing/monitors/22-inch/c22f390-22-curved-monitor-lc22f390fwnxza/gallery/LC22F390FWNXZA_001_Front.png',
   },
 ]
 
@@ -675,7 +666,7 @@ export async function POST() {
           name: category.name,
           slug: category.slug,
           description: category.description,
-          image: sampleImages[cctvCategories.indexOf(category) % sampleImages.length],
+          image: fallbackImages[cctvCategories.indexOf(category) % fallbackImages.length],
         }
       })
     }
@@ -708,13 +699,6 @@ export async function POST() {
 
       const brandId = product.brandName ? brandMap.get(product.brandName) : null
 
-      let productImages = cameraImages
-      if (product.categorySlug === 'nvr' || product.categorySlug === 'dvr') productImages = nvrDvrImages
-      else if (product.categorySlug === 'storage') productImages = hddImages
-      else if (product.categorySlug === 'monitors') productImages = monitorImages
-      else if (product.categorySlug === 'cables') productImages = cableImages
-      else if (product.categorySlug === 'accessories') productImages = accessoryImages
-
       await db.product.create({
         data: {
           name: product.name,
@@ -722,7 +706,7 @@ export async function POST() {
           description: product.description,
           price: product.price,
           comparePrice: product.comparePrice,
-          images: JSON.stringify([productImages[cctvProducts.indexOf(product) % productImages.length]]),
+          images: JSON.stringify([product.image]),
           categoryId,
           brandId,
           stock: product.stock,
