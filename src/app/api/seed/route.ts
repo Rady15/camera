@@ -27,10 +27,41 @@ const cctvBrands = [
 
 // Sample product images (using placeholder)
 const sampleImages = [
+  'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop',
   'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1551808525-51a94da548ce?w=800&h=600&fit=crop',
   'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop',
-  'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop',
+]
+
+const cameraImages = [
+  'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=600&fit=crop',
+]
+
+const nvrDvrImages = [
+  'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=800&h=600&fit=crop',
+]
+
+const hddImages = [
+  'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=800&h=600&fit=crop',
+]
+
+const monitorImages = [
+  'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=800&h=600&fit=crop',
+]
+
+const cableImages = [
+  'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=600&fit=crop',
+]
+
+const accessoryImages = [
+  'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop',
+  'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=800&h=600&fit=crop',
 ]
 
 // CCTV Products
@@ -677,6 +708,13 @@ export async function POST() {
 
       const brandId = product.brandName ? brandMap.get(product.brandName) : null
 
+      let productImages = cameraImages
+      if (product.categorySlug === 'nvr' || product.categorySlug === 'dvr') productImages = nvrDvrImages
+      else if (product.categorySlug === 'storage') productImages = hddImages
+      else if (product.categorySlug === 'monitors') productImages = monitorImages
+      else if (product.categorySlug === 'cables') productImages = cableImages
+      else if (product.categorySlug === 'accessories') productImages = accessoryImages
+
       await db.product.create({
         data: {
           name: product.name,
@@ -684,7 +722,7 @@ export async function POST() {
           description: product.description,
           price: product.price,
           comparePrice: product.comparePrice,
-          images: JSON.stringify([sampleImages[cctvProducts.indexOf(product) % sampleImages.length]]),
+          images: JSON.stringify([productImages[cctvProducts.indexOf(product) % productImages.length]]),
           categoryId,
           brandId,
           stock: product.stock,

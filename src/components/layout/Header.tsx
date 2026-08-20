@@ -148,13 +148,7 @@ export function Header() {
               className="flex items-center gap-2.5 cursor-pointer group flex-shrink-0" 
               onClick={() => setCurrentPage('home')}
             >
-              <div className="bg-slate-900 p-2 rounded-xl transition-transform group-hover:scale-110 duration-300">
-                <Video className="h-6 w-6 text-emerald-400" />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold tracking-tight text-slate-900 leading-none">SecureCam</span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-emerald-600 font-bold mt-1">Vision Systems</span>
-              </div>
+              <img src="/logo.png" alt="SecureCam" className="h-10 w-auto" />
             </div>
 
             {/* Search Bar - Modern Rounded */}
@@ -266,8 +260,7 @@ export function Header() {
                     <div className="bg-slate-950 text-white min-h-full">
                         <div className="p-6 border-b border-white/5 flex flex-col gap-4">
                             <div className="flex items-center gap-2">
-                                <Video className="h-6 w-6 text-emerald-400" />
-                                <span className="text-xl font-bold">SecureCam</span>
+                                <img src="/logo.png" alt="SecureCam" className="h-10 w-auto" />
                             </div>
                             
                             <form onSubmit={handleSearch} className="flex h-11">

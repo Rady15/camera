@@ -23,15 +23,15 @@ const tajawal = Tajawal({
 });
 
 export const metadata: Metadata = {
-  title: "SecureVision - أنظمة المراقبة الذكية | Smart Security Cameras",
+  title: "SecureCam - أنظمة المراقبة الذكية | Smart Security Cameras",
   description: "متجر متخصص في بيع كاميرات المراقبة وأنظمة الأمان | Premium CCTV cameras and security systems",
   keywords: ["كاميرات مراقبة", "CCTV", "أنظمة أمان", "Hikvision", "Dahua", "security cameras"],
-  authors: [{ name: "SecureVision Team" }],
+  authors: [{ name: "SecureCam" }],
   icons: {
-    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
+    icon: "/logo.png",
   },
   openGraph: {
-    title: "SecureVision - أنظمة المراقبة الذكية",
+    title: "SecureCam - أنظمة المراقبة الذكية",
     description: "متجر متخصص في بيع كاميرات المراقبة وأنظمة الأمان",
     type: "website",
   },

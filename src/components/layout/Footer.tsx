@@ -62,10 +62,7 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Shield className="h-8 w-8 text-yellow-400" />
-              <span className="text-xl font-bold">
-                {language === 'ar' ? 'سيكيور فيجن' : 'SecureVision'}
-              </span>
+              <img src="/logo.png" alt="SecureCam" className="h-10 w-auto" />
             </div>
             <p className="text-slate-300 text-sm leading-relaxed">
               {language === 'ar' 
@@ -175,7 +172,7 @@ export function Footer() {
         <div className="container mx-auto px-4 py-4">
           <div className={`flex flex-col md:flex-row justify-between items-center gap-4 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
             <p className="text-slate-400 text-sm">
-              © 2024 {language === 'ar' ? 'سيكيور فيجن. جميع الحقوق محفوظة.' : 'SecureVision. All rights reserved.'}
+              © 2025 {language === 'ar' ? 'SecureCam. جميع الحقوق محفوظة.' : 'SecureCam. All rights reserved.'}
             </p>
             <div className="flex gap-6">
               <button className="text-slate-400 hover:text-yellow-400 transition-colors text-sm">
